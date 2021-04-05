@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace gestion_articles.Models
+namespace outils_dotnet.Models
 {
     public class Role
     {
-        [Key]
+                [Key]
         public int Id { get; set; }
         public string Nom { get; set; }
     }
