@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-namespace outils_dotnet.Models
+namespace gestion_articles.Models
 {
     public class Reservation
     {

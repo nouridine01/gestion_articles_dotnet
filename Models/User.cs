@@ -6,7 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace outils_dotnet.Models
+namespace gestion_articles.Models
 {
     public class User
     {
