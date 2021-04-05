@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace gestion_articles.Models
-{
+{ 
     public class Role
     {
-        [Key]
+                [Key]
         public int Id { get; set; }
         public string Nom { get; set; }
     }
