@@ -1,4 +1,5 @@
-﻿using System;
+﻿using outils_dotnet.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,43 +8,15 @@ namespace gestion_articles.Models
 {
     public class Client
     {
-            [Key]
-        private long id { get; set; }
-        private User user { get; set; }
-        List<Achat> achats = new List<Achat>();
-        List<Location> locations = new List<Location>();
-        List<Reservation> reservations = new List<Reservation>();
+        [Key]
+        public long Id { get; set; }
+        public string UserId { get; set; }
+        public User user { get; set; }
+        public ICollection<Achat> achats { get; set; }
+        public ICollection<Location> locations  { get; set; }
+        public ICollection<Reservation> reservations { get; set; }
 
 
-        public List<Achat> getAchats()
-        {
-            return achats;
-        }
-
-        public void setAchats(List<Achat> achats)
-        {
-            this.achats = achats;
-        }
-
-        public List<Location> getLocations()
-        {
-            return locations;
-        }
-
-        public void setLocations(List<Location> locations)
-        {
-            this.locations = locations;
-        }
-
-        public List<Reservation> getReservations()
-        {
-            return reservations;
-        }
-
-        public void setReservations(List<Reservation> reservations)
-        {
-            this.reservations = reservations;
-        }
 
     }
 }

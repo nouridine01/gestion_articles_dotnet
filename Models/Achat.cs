@@ -1,4 +1,5 @@
-﻿using System;
+﻿using outils_dotnet.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,14 +8,15 @@ namespace gestion_articles.Models
 {
     public class Achat
     {
-       
-            [Key]
-        private long id { get; set; }
-        private DateTime date { get; set; }
-        private Article article { get; set; }
-        private int quantite { get; set; }
-        private Client client { get; set; }
-        private User createBy { get; set; }
+
+        [Key]
+        public long Id { get; set; }
+        public DateTime date { get; set; }
+        public int quantite { get; set; }
+        public int ArticleId { get; set; }
+        public Article article { get; set; }
+        public int ClientId { get; set; }
+        public Client client { get; set; }
 
     }
 

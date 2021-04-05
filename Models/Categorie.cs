@@ -9,21 +9,10 @@ namespace gestion_articles.Models
 {
     public class Categorie
     {
-            [Key]
-        private long id { get; set; }
-        private String nom {get ; set ;}
-        
-        private List<Article> articles = new List<Article>();
+        [Key]
+        public long Id { get; set; }
+        public String nom {get ; set ;}
 
-        
-        public List<Article> getArticles()
-        {
-            return articles;
-        }
-
-        public void setArticles(List<Article> articles)
-        {
-            this.articles = articles;
-        }
+        public List<Article> articles { get; set; }
     }
 }

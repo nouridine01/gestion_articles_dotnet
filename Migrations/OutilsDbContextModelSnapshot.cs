@@ -154,6 +154,188 @@ namespace outils_dotnet.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("gestion_articles.Models.Achat", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("articleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("clientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("quantite")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("articleId");
+
+                    b.HasIndex("clientId");
+
+                    b.ToTable("Achats");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Article", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("achetable")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("categorieId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("createById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("louable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("prix")
+                        .HasColumnType("float");
+
+                    b.Property<int>("quantite")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("categorieId");
+
+                    b.HasIndex("createById");
+
+                    b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Categorie", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Client", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Location", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("articleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("clientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("date_retour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("quantite")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("articleId");
+
+                    b.HasIndex("clientId");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Reservation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("articleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("clientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("date_recup")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("articleId");
+
+                    b.HasIndex("clientId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("outils_dotnet.Areas.Identity.Data.User", b =>
                 {
                     b.Property<string>("Id")
@@ -274,6 +456,103 @@ namespace outils_dotnet.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Achat", b =>
+                {
+                    b.HasOne("gestion_articles.Models.Article", "article")
+                        .WithMany("achatEffectues")
+                        .HasForeignKey("articleId");
+
+                    b.HasOne("gestion_articles.Models.Client", "client")
+                        .WithMany("achats")
+                        .HasForeignKey("clientId");
+
+                    b.Navigation("article");
+
+                    b.Navigation("client");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Article", b =>
+                {
+                    b.HasOne("gestion_articles.Models.Categorie", "categorie")
+                        .WithMany("articles")
+                        .HasForeignKey("categorieId");
+
+                    b.HasOne("outils_dotnet.Areas.Identity.Data.User", "createBy")
+                        .WithMany()
+                        .HasForeignKey("createById");
+
+                    b.Navigation("categorie");
+
+                    b.Navigation("createBy");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Client", b =>
+                {
+                    b.HasOne("outils_dotnet.Areas.Identity.Data.User", "user")
+                        .WithOne("client")
+                        .HasForeignKey("gestion_articles.Models.Client", "UserId");
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Location", b =>
+                {
+                    b.HasOne("gestion_articles.Models.Article", "article")
+                        .WithMany("locationEnCours")
+                        .HasForeignKey("articleId");
+
+                    b.HasOne("gestion_articles.Models.Client", "client")
+                        .WithMany("locations")
+                        .HasForeignKey("clientId");
+
+                    b.Navigation("article");
+
+                    b.Navigation("client");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Reservation", b =>
+                {
+                    b.HasOne("gestion_articles.Models.Article", "article")
+                        .WithMany("reservationEnCours")
+                        .HasForeignKey("articleId");
+
+                    b.HasOne("gestion_articles.Models.Client", "client")
+                        .WithMany("reservations")
+                        .HasForeignKey("clientId");
+
+                    b.Navigation("article");
+
+                    b.Navigation("client");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Article", b =>
+                {
+                    b.Navigation("achatEffectues");
+
+                    b.Navigation("locationEnCours");
+
+                    b.Navigation("reservationEnCours");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Categorie", b =>
+                {
+                    b.Navigation("articles");
+                });
+
+            modelBuilder.Entity("gestion_articles.Models.Client", b =>
+                {
+                    b.Navigation("achats");
+
+                    b.Navigation("locations");
+
+                    b.Navigation("reservations");
+                });
+
+            modelBuilder.Entity("outils_dotnet.Areas.Identity.Data.User", b =>
+                {
+                    b.Navigation("client");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using outils_dotnet.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,48 +9,19 @@ namespace gestion_articles.Models
     public class Article
     {
         [Key]
-        private long id { get; set; }
-        private String nom { get; set; }
-        private Categorie categorie { get; set; }
-        private double prix { get; set; }
-        private int quantite { get; set; }
-        private User createBy { get; set; }
-        private Boolean louable { get; set; }
-        private Boolean achetable { get; set; }
+        public long Id { get; set; }
+        public String nom { get; set; }
+        public Categorie categorie { get; set; }
+        public double prix { get; set; }
+        public int quantite { get; set; }
+        public User createBy { get; set; }
+        public Boolean louable { get; set; }
+        public Boolean achetable { get; set; }
 
-        private List<Reservation> reservationEnCours = new List<Reservation>();
-        private List<Achat> achatEffectues = new List<Achat>();    
-        private List<Location> locationEnCours = new List<Location>();
-  
-      
-        public List<Reservation> getReservationEnCours()
-        {
-            return reservationEnCours;
-        }
+        public ICollection<Reservation> reservationEnCours { get; set; }
+        public ICollection<Achat> achatEffectues { get; set; }
+        public ICollection<Location> locationEnCours { get; set; }
 
-        public void setReservationEnCours(List<Reservation> reservationEnCours)
-        {
-            this.reservationEnCours = reservationEnCours;
-        }
 
-        public List<Achat> getAchatEffectues()
-        {
-            return achatEffectues;
-        }
-
-        public void setAchatEffectues(List<Achat> achatEffectues)
-        {
-            this.achatEffectues = achatEffectues;
-        }
-
-        public List<Location> getLocationEnCours()
-        {
-            return locationEnCours;
-        }
-
-        public void setLocationEnCours(List<Location> locationEnCours)
-        {
-            this.locationEnCours = locationEnCours;
-        }
     }
 }

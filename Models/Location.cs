@@ -1,4 +1,5 @@
-﻿using System;
+﻿using outils_dotnet.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,13 +8,14 @@ namespace gestion_articles.Models
 {
     public class Location
     {
-            [Key]
-        private long id { get; set; }
-        private DateTime date { get; set; }
-        private DateTime date_retour { get; set; }
-        private User createBy { get; set; }
-        private int quantite { get; set; }
-        Article article { get; set; }
-        Client client { get; set; }
+        [Key]
+        public long Id { get; set; }
+        public DateTime date { get; set; }
+        public DateTime date_retour { get; set; }
+        public int quantite { get; set; }
+        public int ArticleId { get; set; }
+        public Article article { get; set; }
+        public int ClientId { get; set; }
+        public Client client { get; set; }
     }
 }

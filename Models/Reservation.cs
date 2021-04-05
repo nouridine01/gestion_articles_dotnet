@@ -8,23 +8,16 @@ namespace gestion_articles.Models
     public class Reservation
     {
         [Key]
-        private long id { get; set; }
-        private String type { get; set; }
-        private DateTime date { get; set; }
-        private DateTime date_recup { get; set; }
-        private Boolean satisfaite = false;
-        private int quantity { get; set; }
-        Article article { get; set; }
-        Client client { get; set; }
+        public long Id { get; set; }
+        public String type { get; set; }
+        public DateTime date { get; set; }
+        public DateTime date_recup { get; set; }
+        public Boolean satisfaite = false;
+        public int quantity { get; set; }
+        public int ArticleId { get; set; }
+        public Article article { get; set; }
+        public int ClientId { get; set; }
+        public Client client { get; set; }
 
-        public Boolean getSatisfaite()
-        {
-            return satisfaite;
-        }
-
-        public void setSatisfaite(Boolean satisfaite)
-        {
-            this.satisfaite = satisfaite;
-        }
     }
 }

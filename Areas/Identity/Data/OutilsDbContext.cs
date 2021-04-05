@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using gestion_articles.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,13 @@ namespace outils_dotnet.Areas.Identity.Data
 {
     public class OutilsDbContext : IdentityDbContext<User>
     {
-       
+        
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Categorie> Categories { get; set; }
+        public DbSet<Achat> Achats { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
         public OutilsDbContext(DbContextOptions<OutilsDbContext> options)
             : base(options)
         {
