@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using outils_dotnet.Areas.Identity.Data;
-
+using outils_dotnet.Models;
 
 [assembly: HostingStartup(typeof(outils_dotnet.Areas.Identity.IdentityHostingStartup))]
 namespace outils_dotnet.Areas.Identity
@@ -20,7 +20,7 @@ namespace outils_dotnet.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("OutilsDbContextConnection")));
 
-                services.AddDefaultIdentity<User>(options => {
+                services.AddIdentity<User,Role>(options => {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;

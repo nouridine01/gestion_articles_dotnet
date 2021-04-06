@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-namespace gestion_articles.Models
+namespace outils_dotnet.Models
 {
     public class Client
     {
         [Key]
         public long Id { get; set; }
         public string UserId { get; set; }
-        public User user { get; set; }
-        public ICollection<Achat> achats { get; set; }
-        public ICollection<Location> locations  { get; set; }
-        public ICollection<Reservation> reservations { get; set; }
+        public User User { get; set; }
+        public ICollection<Achat> Achats { get; set; }
+        public ICollection<Location> Locations  { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
 
 
 

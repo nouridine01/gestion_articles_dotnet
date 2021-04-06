@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace gestion_articles.Models
+namespace outils_dotnet.Models
 { 
-    public class Role
+    public class Role : IdentityRole
     {
-        [Key]
-        public int Id { get; set; }
+        
         public string Nom { get; set; }
     }
 }

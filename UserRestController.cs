@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using gestion_articles.DAL;
-using gestion_articles.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.Models;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,6 +27,13 @@ namespace gestion_articles
         public IEnumerable<User> Get()
         {
             return service.Users;
+        }
+
+        [Route("/cat")]
+        [HttpGet]
+        public IEnumerable<Categorie> Getc()
+        {
+            return service.Categories;
         }
 
         /*[HttpGet("{id}")]
@@ -64,6 +71,6 @@ namespace gestion_articles
             return user;
         }*/
 
-      
+
     }
 }

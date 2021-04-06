@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using gestion_articles.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace outils_dotnet.Areas.Identity.Data
@@ -16,7 +15,7 @@ namespace outils_dotnet.Areas.Identity.Data
         public string Nom { get; set; }
 
         public string Prenom { get; set; }
-        public Client client { get; set; }
+        public Models.Client client { get; set; }
         
         public override string UserName {get;set;}
        

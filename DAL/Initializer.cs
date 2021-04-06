@@ -1,4 +1,4 @@
-﻿using gestion_articles.Models;
+﻿
 using outils_dotnet.Areas.Identity.Data; 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace gestion_articles.DAL
         public static void Seed(OutilsDbContext context)
         {
             context.Database.EnsureCreated();
-
+           
             // Look for any students.
             if (context.Users.Any())
             {
@@ -26,7 +26,7 @@ namespace gestion_articles.DAL
             new User{Nom="Carson",Prenom="Alexander"},
             };
 
-            users.ForEach(s => context.Users.Add(s));
+            //users.ForEach(s => context.Users.Add(s));
             context.SaveChanges();
         }
     }
