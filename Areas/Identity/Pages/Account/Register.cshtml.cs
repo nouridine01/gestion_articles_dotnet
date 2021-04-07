@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.Models;
 
 namespace outils_dotnet.Areas.Identity.Pages.Account
 {
@@ -24,13 +25,16 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            _roleManager = roleManager; 
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -71,6 +75,7 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "CLIENT" });
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -81,6 +86,8 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    user = await _userManager.FindByNameAsync(user.UserName);
+                    await _userManager.AddToRoleAsync(user, "CLIENT");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

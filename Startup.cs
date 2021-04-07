@@ -1,4 +1,4 @@
-using gestion_articles.DAL;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,10 @@ namespace outils_dotnet
         public void ConfigureServices(IServiceCollection services)
         {
 
-            /*services.AddDbContext<OutilsDbContext>(options =>
+            services.AddDbContext<dbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("OutilsDbContextConnection"));
-            });*/
+            });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

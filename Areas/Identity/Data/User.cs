@@ -15,7 +15,7 @@ namespace outils_dotnet.Areas.Identity.Data
         public string Nom { get; set; }
 
         public string Prenom { get; set; }
-        public Models.Client client { get; set; }
+        public Models.Client Client { get; set; }
         
         public override string UserName {get;set;}
        

@@ -1,10 +1,13 @@
-using gestion_articles.DAL;
+
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.DAL;
+using outils_dotnet.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

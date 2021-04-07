@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using gestion_articles.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.Data;
 using outils_dotnet.Models;
 
 
@@ -18,6 +18,7 @@ namespace gestion_articles
     public class UserRestController : Controller
     {
         private readonly OutilsDbContext service;
+        private readonly dbContext service2;
         public UserRestController(OutilsDbContext ser)
         {
             this.service = ser;
@@ -33,7 +34,7 @@ namespace gestion_articles
         [HttpGet]
         public IEnumerable<Categorie> Getc()
         {
-            return service.Categories;
+            return service2.Categorie;
         }
 
         /*[HttpGet("{id}")]

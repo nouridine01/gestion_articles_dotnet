@@ -20,7 +20,7 @@ namespace outils_dotnet.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("OutilsDbContextConnection")));
 
-                services.AddIdentity<User,Role>(options => {
+                services.AddDefaultIdentity<User>(options => {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
@@ -29,7 +29,7 @@ namespace outils_dotnet.Areas.Identity
                     options.Password.RequireNonAlphanumeric = false;
                     
                 
-                })
+                }).AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<OutilsDbContext>();
             });
         }
