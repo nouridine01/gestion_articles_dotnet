@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace outils_dotnet.Controllers
 {
@@ -20,12 +21,14 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Reservations
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Reservation.ToListAsync());
         }
 
         // GET: Reservations/Details/5
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Reservations/Create
+        [Authorize(Roles = "CLIENT")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CLIENT")]
         public async Task<IActionResult> Create([Bind("Id,Type,Date,Date_recup,Quantity,ArticleId,ClientId")] Reservation reservation)
         {
             if (ModelState.IsValid)
@@ -65,7 +70,9 @@ namespace outils_dotnet.Controllers
             return View(reservation);
         }
 
+        /*
         // GET: Reservations/Edit/5
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -144,6 +151,7 @@ namespace outils_dotnet.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
 
         private bool ReservationExists(long id)
         {

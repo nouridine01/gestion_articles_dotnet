@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace outils_dotnet.Controllers
 {
@@ -20,12 +21,14 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Locations
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Location.ToListAsync());
         }
 
         // GET: Locations/Details/5
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Locations/Create
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Create([Bind("Id,Date,Date_retour,Quantite,ArticleId,ClientId")] Location location)
         {
             if (ModelState.IsValid)
@@ -66,6 +71,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Locations/Edit/5
+        [Authorize(Roles = "CLIENT")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -86,6 +92,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CLIENT")]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Date,Date_retour,Quantite,ArticleId,ClientId")] Location location)
         {
             if (id != location.Id)
@@ -116,7 +123,9 @@ namespace outils_dotnet.Controllers
             return View(location);
         }
 
+        /*
         // GET: Locations/Delete/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -137,13 +146,14 @@ namespace outils_dotnet.Controllers
         // POST: Locations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var location = await _context.Location.FindAsync(id);
             _context.Location.Remove(location);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        }*/
 
         private bool LocationExists(long id)
         {

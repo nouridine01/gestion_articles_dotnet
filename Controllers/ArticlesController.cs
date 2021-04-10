@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace outils_dotnet.Controllers
 {
@@ -20,12 +21,14 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Articles
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Article.ToListAsync());
         }
 
         // GET: Articles/Details/5
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Articles/Create
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article)
         {
             if (ModelState.IsValid)
@@ -66,6 +71,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Articles/Edit/5
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -86,6 +92,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Edit(long id, [Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article)
         {
             if (id != article.Id)
@@ -117,6 +124,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Articles/Delete/5
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -137,6 +145,7 @@ namespace outils_dotnet.Controllers
         // POST: Articles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var article = await _context.Article.FindAsync(id);

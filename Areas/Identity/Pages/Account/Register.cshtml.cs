@@ -56,15 +56,23 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Le mot de passe doit faire au moins {2} et au maximum {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmer le mort de passe")]
+            [Compare("Password", ErrorMessage = "Les deux mots de passe ne correspondent pas.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Nom")]
+            public string Nom { get; set; }
+
+            [Required]
+            [Display(Name = "Prenom")]
+            public string Prenom { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -76,11 +84,13 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             //await _roleManager.CreateAsync(new IdentityRole { Name = "CLIENT" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "VENDEUR" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "ADMIN" });
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email };
+                var user = new User { UserName = Input.Email, Email = Input.Email, Nom = Input.Nom, Prenom = Input.Prenom };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

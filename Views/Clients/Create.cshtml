@@ -1,4 +1,4 @@
-﻿@model outils_dotnet.Models.Client
+﻿@model outils_dotnet.Areas.Identity.Data.User
 
 @{
     ViewData["Title"] = "Create";
@@ -14,9 +14,28 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" class="form-control" required/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nom"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prenom"></label>
+                <input asp-for="Prenom" class="form-control" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+            <!-- <div class="form-group">
+        <label asp-for="UserId" class="control-label"></label>
+        <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+    </div> -->
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

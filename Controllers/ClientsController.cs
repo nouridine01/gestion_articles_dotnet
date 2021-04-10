@@ -8,19 +8,28 @@ using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Areas.Identity.Data;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using outils_dotnet.Areas.Identity.Pages.Account;
 
 namespace outils_dotnet.Controllers
 {
     public class ClientsController : Controller
     {
         private readonly dbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<RegisterModel> _logger;
 
-        public ClientsController(dbContext context)
+        public ClientsController(dbContext context, UserManager<User> userManager, ILogger<RegisterModel> logger)
         {
             _context = context;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: Clients
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Index()
         {
             var dbContext = _context.Client.Include(c => c.User);
@@ -28,6 +37,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Details/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -47,6 +57,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Create
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
@@ -58,19 +69,42 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId")] Client client)
+        [Authorize(Roles = "ADMIN, VENDEUR")]
+        public async Task<IActionResult> Create([Bind("Email,Nom,Prenom")] User user, string password)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(client);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                user.UserName = user.Email;
+                var result = await _userManager.CreateAsync(user, password);
+                if(result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    user = await _userManager.FindByNameAsync(user.UserName);
+                    await _userManager.AddToRoleAsync(user, "CLIENT");
+
+                    return RedirectToAction(nameof(Index));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(user);
             }
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", client.UserId);
-            return View(client);
+                /*if (ModelState.IsValid)
+                {
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", client.UserId);*/
+                return Content($"Hello {password}");
+            //return View(client);
         }
 
         // GET: Clients/Edit/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -92,6 +126,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Edit(long id, [Bind("Id,UserId")] Client client)
         {
             if (id != client.Id)
@@ -124,6 +159,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Delete/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -145,6 +181,7 @@ namespace outils_dotnet.Controllers
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var client = await _context.Client.FindAsync(id);

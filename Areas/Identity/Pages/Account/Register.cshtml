@@ -27,10 +27,20 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Input.Nom"></label>
+                <input asp-for="Input.Nom" class="form-control" />
+                <span asp-validation-for="Input.Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Prenom"></label>
+                <input asp-for="Input.Prenom" class="form-control" />
+                <span asp-validation-for="Input.Prenom" class="text-danger"></span>
+            </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <!-- <div class="col-md-6 col-md-offset-2">
         <section>
             <h4>Use another service to register.</h4>
             <hr />
@@ -59,7 +69,7 @@
                 }
             }
         </section>
-    </div>
+    </div> -->
 </div>
 
 @section Scripts {

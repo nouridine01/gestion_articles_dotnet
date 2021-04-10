@@ -22,10 +22,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                         </li>
                     </ul>
 
@@ -36,10 +33,66 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-md-4 col-lg-3 col-xl-2 navbar-nav flex-grow-1 outils-navbar">
+                    <h2>Navigation</h2>
+                    <nav>
+                        <ul class="nav-ul">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Articles" asp-action="Index">Liste des articles</a>
+                            </li>
+
+                            @if (User.IsInRole("CLIENT"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Reservations" asp-action="MesReservations">Mes réservations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Locations" asp-action="MesLocations">Mes locations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Achats" asp-action="MesAchats">Mes achats</a>
+                                </li>
+                            }
+                            @if ((User.IsInRole("VENDEUR")) || (User.IsInRole("ADMIN")))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Categories" asp-action="Index">Liste des catégories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Clients" asp-action="Index">Liste des clients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Reservations" asp-action="Index">Historique des réservations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Locations" asp-action="Index">Historique des locations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Achats" asp-action="Index">Historique des achats</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-8 col-lg-9 col-xl-10">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            }
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
