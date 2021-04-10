@@ -70,18 +70,51 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Create([Bind("Email,Nom,Prenom")] User user, string password)
+        public async Task<IActionResult> Create([Bind("Email,Nom,Prenom")] User user, string password, string[] roles = null)
         {
+            roles ??= new string[0];
             if (ModelState.IsValid)
             {
                 user.UserName = user.Email;
                 var result = await _userManager.CreateAsync(user, password);
                 if(result.Succeeded)
                 {
+               
                     _logger.LogInformation("User created a new account with password.");
 
                     user = await _userManager.FindByNameAsync(user.UserName);
-                    await _userManager.AddToRoleAsync(user, "CLIENT");
+
+                    if(roles.Length == 0)
+                    {
+                        await _userManager.AddToRoleAsync(user, "CLIENT");
+                        Client client = new Client();
+                        _context.Add(client);
+                        await _context.SaveChangesAsync();
+                        client.User = user;
+                        _context.Update(client);
+                        await _context.SaveChangesAsync();
+                    }
+                    else foreach(String str in roles)
+                    {
+                        switch(str)
+                        {
+                            case ("admin"):
+                                await _userManager.AddToRoleAsync(user, "ADMIN");
+                                break;
+                            case ("vendeur"):
+                                await _userManager.AddToRoleAsync(user, "VENDEUR");
+                                break;
+                            case ("client"):
+                                await _userManager.AddToRoleAsync(user, "CLIENT");
+                                Client client = new Client();
+                                _context.Add(client);
+                                await _context.SaveChangesAsync();
+                                client.User = user;
+                                _context.Update(client);
+                                await _context.SaveChangesAsync();
+                                break;
+                        }
+                    }
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -90,17 +123,8 @@ namespace outils_dotnet.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
 
-                return View(user);
             }
-                /*if (ModelState.IsValid)
-                {
-                    _context.Add(user);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", client.UserId);*/
-                return Content($"Hello {password}");
-            //return View(client);
+            return View(user);
         }
 
         // GET: Clients/Edit/5
