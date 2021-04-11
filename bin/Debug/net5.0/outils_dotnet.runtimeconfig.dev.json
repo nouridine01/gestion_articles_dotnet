@@ -1,8 +1,9 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\flodu\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\flodu\\.nuget\\packages"
+      "C:\\Users\\aymer\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\aymer\\.nuget\\packages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ]
   }
 }
