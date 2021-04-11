@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using outils_dotnet.Areas.Identity.Data;
+using outils_dotnet.Data;
 using outils_dotnet.Models;
 
 namespace outils_dotnet.Areas.Identity.Pages.Account
@@ -26,19 +27,22 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly dbContext _context;
 
         public RegisterModel(
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            dbContext context)
         {
             _roleManager = roleManager; 
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -98,6 +102,13 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
 
                     user = await _userManager.FindByNameAsync(user.UserName);
                     await _userManager.AddToRoleAsync(user, "CLIENT");
+                    Client client = new Client();
+                    _context.Add(client);
+                    await _context.SaveChangesAsync();
+                    client.User = user;
+                    _context.Update(client);
+                    await _context.SaveChangesAsync();
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

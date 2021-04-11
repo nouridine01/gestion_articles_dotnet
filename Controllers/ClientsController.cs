@@ -32,32 +32,30 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Index()
         {
-            var dbContext = _context.Client.Include(c => c.User);
+            var dbContext = _userManager.Users;
             return View(await dbContext.ToListAsync());
         }
 
         // GET: Clients/Details/5
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (client == null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(user);
         }
 
         // GET: Clients/Create
-        [Authorize(Roles = "ADMIN, VENDEUR")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
@@ -69,7 +67,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN, VENDEUR")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create([Bind("Email,Nom,Prenom")] User user, string password, string[] roles = null)
         {
             roles ??= new string[0];
@@ -128,21 +126,20 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Edit/5
-        [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Edit(long? id)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client.FindAsync(id);
-            if (client == null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", client.UserId);
-            return View(client);
+            return View(user);
         }
 
         // POST: Clients/Edit/5
@@ -150,17 +147,26 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,UserId")] Client client)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Nom,Prenom")] User user)
         {
-            if (id != client.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var currentUser = await _userManager.FindByIdAsync(id);
+
+                currentUser.UserName = user.UserName;
+                currentUser.Nom = user.Nom;
+                currentUser.Prenom = user.Prenom;
+
+                await _userManager.UpdateAsync(currentUser);
+                
+
+                /*try
                 {
                     _context.Update(client);
                     await _context.SaveChangesAsync();
@@ -175,42 +181,47 @@ namespace outils_dotnet.Controllers
                     {
                         throw;
                     }
-                }
+                }*/
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", client.UserId);
-            return View(client);
+            return View(user);
         }
 
         // GET: Clients/Delete/5
-        [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Delete(long? id)
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (client == null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(user);
         }
 
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var client = await _context.Client.FindAsync(id);
-            _context.Client.Remove(client);
-            await _context.SaveChangesAsync();
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (await _userManager.IsInRoleAsync(user, "client"))
+            {
+                var client = await _context.Client.Where(c => c.UserId == id).ToListAsync();
+                _context.Client.Remove(client.First());
+                await _context.SaveChangesAsync();
+            }
+
+            await _userManager.DeleteAsync(user);
+
             return RedirectToAction(nameof(Index));
         }
 

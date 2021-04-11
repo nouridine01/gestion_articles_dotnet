@@ -9,7 +9,7 @@ namespace outils_dotnet.Data
 {
     public class dbContext : DbContext
     {
-        public dbContext (DbContextOptions<dbContext> options)
+        public dbContext(DbContextOptions<dbContext> options)
             : base(options)
         {
         }
