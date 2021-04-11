@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using outils_dotnet.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace outils_dotnet.Controllers
 {
     public class LocationsController : Controller
     {
         private readonly dbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public LocationsController(dbContext context)
+        public LocationsController(dbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Locations
@@ -25,6 +30,15 @@ namespace outils_dotnet.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Location.ToListAsync());
+        }
+
+        //GET: Locations/MesLocations
+        [Authorize(Roles = "CLIENT")]
+        public async Task<IActionResult> MesLocations()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Client client = _context.Client.Where(c => c.UserId == userId).First();
+            return View(await _context.Location.Where(a => a.ClientId == client.Id).ToListAsync());
         }
 
         // GET: Locations/Details/5

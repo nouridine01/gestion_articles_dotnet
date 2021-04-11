@@ -386,3 +386,6 @@ C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\outils_dotnet.R
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\outils_dotnet.Views.pdb
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\outils_dotnet.csproj.CopyComplete
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\outils_dotnet.genruntimeconfig.cache
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Achats\MesAchats.cshtml.g.cs
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Locations\MesLocations.cshtml.g.cs
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Reservations\MesReservations.cshtml.g.cs

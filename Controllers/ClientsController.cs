@@ -165,23 +165,6 @@ namespace outils_dotnet.Controllers
 
                 await _userManager.UpdateAsync(currentUser);
                 
-
-                /*try
-                {
-                    _context.Update(client);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }*/
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
