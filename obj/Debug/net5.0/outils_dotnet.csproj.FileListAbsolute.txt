@@ -578,3 +578,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\outils_dotnet.dll
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\ref\outils_dotnet.dll
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\outils_dotnet.pdb
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\outils_dotnet.genruntimeconfig.cache
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Achats\MesAchats.cshtml.g.cs
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Locations\MesLocations.cshtml.g.cs
+C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Reservations\MesReservations.cshtml.g.cs

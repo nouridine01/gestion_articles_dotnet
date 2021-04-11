@@ -58,6 +58,7 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
+            User user = await _userManager.FindByIdAsync("");
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
             return View();
         }
@@ -135,6 +136,7 @@ namespace outils_dotnet.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(id);
+           
             if (user == null)
             {
                 return NotFound();
@@ -165,23 +167,6 @@ namespace outils_dotnet.Controllers
 
                 await _userManager.UpdateAsync(currentUser);
                 
-
-                /*try
-                {
-                    _context.Update(client);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }*/
                 return RedirectToAction(nameof(Index));
             }
             return View(user);

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace outils_dotnet.Controllers
 {
@@ -25,6 +26,15 @@ namespace outils_dotnet.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Reservation.ToListAsync());
+        }
+
+        //GET: Reservations/MesReservations
+        [Authorize(Roles = "CLIENT")]
+        public async Task<IActionResult> MesReservations()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Client client = _context.Client.Where(c => c.UserId == userId).First();
+            return View(await _context.Reservation.Where(a => a.ClientId == client.Id).ToListAsync());
         }
 
         // GET: Reservations/Details/5

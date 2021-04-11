@@ -10,6 +10,8 @@ using outils_dotnet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using outils_dotnet.Areas.Identity.Data;
+using System.Security.Claims;
+
 
 namespace outils_dotnet.Controllers
 {
@@ -17,7 +19,6 @@ namespace outils_dotnet.Controllers
     {
         private readonly dbContext _context;
         private readonly UserManager<User> _userManager;
-
 
         public AchatsController(dbContext context, UserManager<User> userManager)
         {
@@ -30,6 +31,15 @@ namespace outils_dotnet.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Achat.ToListAsync());
+        }
+
+        //GET: Achats/MesAchats
+        [Authorize(Roles = "CLIENT")]
+        public async Task<IActionResult> MesAchats()
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Client client = _context.Client.Where(c => c.UserId == userId).First();
+            return View(await _context.Achat.Where(a => a.ClientId == client.Id).ToListAsync());
         }
 
         // GET: Achats/Details/5
