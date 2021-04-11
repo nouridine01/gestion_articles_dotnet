@@ -48,6 +48,13 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            var article = _context.Article.Find((long)achat.ArticleId);
+            var client = _context.Client.Find((long)achat.ClientId);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            ViewData["Article"] = article;
+            ViewData["User"] = user;
+
             return View(achat);
         }
 

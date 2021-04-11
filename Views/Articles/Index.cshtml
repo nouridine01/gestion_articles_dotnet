@@ -62,7 +62,7 @@
                     <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
                     <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
                 }
-                @if (User.IsInRole("VENDEUR"))
+                @if (User.IsInRole("VENDEUR") && item.Achetable)
                 {
                     <a asp-controller="Achats" asp-action="Create" asp-route-id="@item.Id">| Acheter</a>
                 }
