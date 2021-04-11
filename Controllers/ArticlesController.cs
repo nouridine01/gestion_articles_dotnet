@@ -24,7 +24,8 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Article.ToListAsync());
+            var dbContext = _context.Article.Include(a => a.Categorie);
+            return View(await dbContext.ToListAsync());
         }
 
         // GET: Articles/Details/5
@@ -37,6 +38,7 @@ namespace outils_dotnet.Controllers
             }
 
             var article = await _context.Article
+                .Include(a => a.Categorie)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -50,6 +52,7 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
+            ViewData["CategorieId"] = new SelectList(_context.Set<Categorie>(), "Id", "Nom");
             return View();
         }
 
@@ -59,10 +62,11 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Create([Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article, long Categorie)
         {
             if (ModelState.IsValid)
             {
+                article.Categorie = _context.Categorie.Find(Categorie);
                 _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,12 +82,15 @@ namespace outils_dotnet.Controllers
             {
                 return NotFound();
             }
-
-            var article = await _context.Article.FindAsync(id);
+            var article = await _context.Article.Include(a => a.Categorie).FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
                 return NotFound();
             }
+
+            var listCategorie = new SelectList(_context.Set<Categorie>(), "Id", "Nom", article.Categorie.Id);
+            ViewData["CategorieId"] = listCategorie;
+            Console.WriteLine(article.Categorie.Id);
             return View(article);
         }
 
@@ -93,7 +100,7 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Nom,Prix,Quantite,Louable,Achetable")] Article article, long Categorie)
         {
             if (id != article.Id)
             {
@@ -104,6 +111,7 @@ namespace outils_dotnet.Controllers
             {
                 try
                 {
+                    article.Categorie = _context.Categorie.Find(Categorie);
                     _context.Update(article);
                     await _context.SaveChangesAsync();
                 }
@@ -133,6 +141,7 @@ namespace outils_dotnet.Controllers
             }
 
             var article = await _context.Article
+                .Include(a => a.Categorie)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
