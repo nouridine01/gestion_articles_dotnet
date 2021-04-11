@@ -537,7 +537,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Areas\Identi
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Create.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Delete.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Details.cshtml.g.cs
-D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Edit.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Index.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Articles\Create.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Articles\Delete.cshtml.g.cs
@@ -559,7 +558,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Home\P
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Create.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Delete.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Details.cshtml.g.cs
-D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Edit.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Index.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Reservations\Create.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Reservations\Delete.cshtml.g.cs

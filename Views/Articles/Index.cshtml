@@ -56,9 +56,16 @@
                 @Html.DisplayFor(modelItem => item.Achetable)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
+                }
+                @if (User.IsInRole("VENDEUR"))
+                {
+                    <a asp-controller="Achats" asp-action="Create" asp-route-id="@item.Id">| Acheter</a>
+                }
             </td>
         </tr>
 }

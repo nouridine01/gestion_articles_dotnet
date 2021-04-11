@@ -13,24 +13,26 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
+
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Nom de l'article
+                </dt>
+                <dd class="col-sm-8">
+                    @ViewBag.Article.Nom
+                </dd>
+            </dl>
+
+            <input type="hidden" value="@ViewBag.Article.Id" name="ArticleId" />
+
             <div class="form-group">
                 <label asp-for="Quantite" class="control-label"></label>
-                <input asp-for="Quantite" class="form-control" />
+                <input asp-for="Quantite" class="form-control" min="1" max="@ViewBag.Article.Quantite" />
                 <span asp-validation-for="Quantite" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ArticleId" class="control-label"></label>
-                <input asp-for="ArticleId" class="form-control" />
-                <span asp-validation-for="ArticleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ClientId" class="control-label"></label>
-                <input asp-for="ClientId" class="form-control" />
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId"></select>
                 <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">

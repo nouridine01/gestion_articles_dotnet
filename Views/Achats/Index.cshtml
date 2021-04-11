@@ -7,9 +7,6 @@
 
 <h1>Historique des achats</h1>
 
-<p>
-    <a asp-action="Create">Créer un nouvel achat</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -44,9 +41,7 @@
                 @Html.DisplayFor(modelItem => item.ClientId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
             </td>
         </tr>
 }

@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using outils_dotnet.Data;
 using outils_dotnet.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using outils_dotnet.Areas.Identity.Data;
 
 namespace outils_dotnet.Controllers
 {
     public class AchatsController : Controller
     {
         private readonly dbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public AchatsController(dbContext context)
+
+        public AchatsController(dbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Achats
@@ -48,8 +53,19 @@ namespace outils_dotnet.Controllers
 
         // GET: Achats/Create
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync(long? id)
         {
+            var listItem = new List<SelectListItem>();
+            foreach(Client c in _context.Set<Client>())
+            {
+                var user = await _userManager.FindByIdAsync(c.UserId);
+                var name = user.Nom;
+                listItem.Add(new SelectListItem { Text = name.ToString(), Value = c.Id.ToString() });
+            }
+            ViewData["ClientId"] = new SelectList(listItem, "Value", "Text", 1);
+
+            var article = _context.Article.Find(id);
+            ViewData["Article"] = article;
             return View();
         }
 
@@ -59,10 +75,14 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Create([Bind("Id,Date,Quantite,ArticleId,ClientId")] Achat achat)
+        public async Task<IActionResult> Create([Bind("Quantite,ArticleId,ClientId")] Achat achat)
         {
             if (ModelState.IsValid)
             {
+                achat.Date = DateTime.Now;
+                var article = _context.Article.Find((long)achat.ArticleId);
+                article.Quantite -= achat.Quantite;
+                _context.Update(article);
                 _context.Add(achat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

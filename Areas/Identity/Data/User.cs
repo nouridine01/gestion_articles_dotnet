@@ -18,6 +18,11 @@ namespace outils_dotnet.Areas.Identity.Data
         public Models.Client Client { get; set; }
         
         public override string UserName {get;set;}
+
+        public override string ToString()
+        {
+            return Nom;
+        }
        
     }
 }
