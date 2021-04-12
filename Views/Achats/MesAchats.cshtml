@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<outils_dotnet.Models.Achat>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mes achats";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -42,7 +42,7 @@
                     @Html.DisplayFor(modelItem => item.ClientId)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
         }
