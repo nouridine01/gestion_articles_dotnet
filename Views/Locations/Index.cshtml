@@ -7,9 +7,6 @@
 
 <h1>Historique des locations</h1>
 
-<p>
-    <a asp-action="Create">Créer une nouvelle location</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -50,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.ClientId)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
             </td>
         </tr>
 }

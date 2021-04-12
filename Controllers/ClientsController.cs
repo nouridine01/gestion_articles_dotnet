@@ -58,7 +58,6 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
-            User user = await _userManager.FindByIdAsync("");
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
             return View();
         }

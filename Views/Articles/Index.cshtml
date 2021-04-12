@@ -66,6 +66,10 @@
                 {
                     <a asp-controller="Achats" asp-action="Create" asp-route-id="@item.Id">| Acheter</a>
                 }
+                @if (User.IsInRole("VENDEUR") && item.Louable)
+                {
+                    <a asp-controller="Locations" asp-action="Create" asp-route-id="@item.Id">| Louer</a>
+                }
             </td>
         </tr>
 }

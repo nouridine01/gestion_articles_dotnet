@@ -535,7 +535,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Areas\Identi
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Create.cshtml.g.cs
-D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Delete.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Details.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\Index.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Articles\Create.cshtml.g.cs
@@ -556,7 +555,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Client
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Create.cshtml.g.cs
-D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Delete.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Details.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\Index.cshtml.g.cs
 D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Reservations\Create.cshtml.g.cs
@@ -581,3 +579,6 @@ D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\outils_dotnet.genr
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Achats\MesAchats.cshtml.g.cs
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Locations\MesLocations.cshtml.g.cs
 C:\Users\flodu\Documents\Cours\S10\archi\dotnet\obj\Debug\net5.0\Razor\Views\Reservations\MesReservations.cshtml.g.cs
+D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Achats\MesAchats.cshtml.g.cs
+D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Locations\MesLocations.cshtml.g.cs
+D:\Programmes_Visual\gestion_articles_dotnet\obj\Debug\net5.0\Razor\Views\Reservations\MesReservations.cshtml.g.cs

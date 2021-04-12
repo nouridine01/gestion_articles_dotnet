@@ -57,13 +57,31 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            var article = _context.Article.Find((long)location.ArticleId);
+            var client = _context.Client.Find((long)location.ClientId);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            ViewData["Article"] = article;
+            ViewData["User"] = user;
+
             return View(location);
         }
 
         // GET: Locations/Create
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync(long? id)
         {
+            var listItem = new List<SelectListItem>();
+            foreach (Client c in _context.Set<Client>())
+            {
+                var user = await _userManager.FindByIdAsync(c.UserId);
+                var name = user.Nom;
+                listItem.Add(new SelectListItem { Text = name.ToString(), Value = c.Id.ToString() });
+            }
+            ViewData["ClientId"] = new SelectList(listItem, "Value", "Text", 1);
+
+            var article = _context.Article.Find(id);
+            ViewData["Article"] = article;
             return View();
         }
 
@@ -73,10 +91,14 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN, VENDEUR")]
-        public async Task<IActionResult> Create([Bind("Id,Date,Date_retour,Quantite,ArticleId,ClientId")] Location location)
+        public async Task<IActionResult> Create([Bind("Date_retour,Quantite,ArticleId,ClientId")] Location location)
         {
             if (ModelState.IsValid)
             {
+                location.Date = DateTime.Now;
+                var article = _context.Article.Find((long)location.ArticleId);
+                article.Quantite -= location.Quantite;
+                _context.Update(article);
                 _context.Add(location);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -85,7 +107,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Locations/Edit/5
-        [Authorize(Roles = "CLIENT")]
+        /*[Authorize(Roles = "CLIENT")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
