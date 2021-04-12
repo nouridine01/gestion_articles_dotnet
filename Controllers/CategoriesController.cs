@@ -138,7 +138,7 @@ namespace outils_dotnet.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(categorie);
         }
 
@@ -149,9 +149,18 @@ namespace outils_dotnet.Controllers
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var categorie = await _context.Categorie.FindAsync(id);
-            _context.Categorie.Remove(categorie);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var isEmpty = await _context.Article.FirstOrDefaultAsync(a => a.Categorie.Id == id);
+            if(isEmpty == null)
+            {
+                _context.Categorie.Remove(categorie);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewData["Suppression"] = "Vous ne pouvez pas supprimer cette catégorie car elle n'est pas vide.";
+                return View(categorie);
+            }
         }
 
         private bool CategorieExists(long id)
