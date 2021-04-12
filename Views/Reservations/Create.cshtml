@@ -13,15 +13,42 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Nom de l'article
+                </dt>
+                <dd class="col-sm-8">
+                    @ViewBag.Article.Nom
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Nom du client
+                </dt>
+                <dd class="col-sm-8">
+                    @ViewBag.User.Nom
+                </dd>
+            </dl>
+
+            <input type="hidden" value="@ViewBag.Article.Id" name="ArticleId" />
+            <input type="hidden" value="@ViewBag.Client.Id" name="ClientId" />
+
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
+                <br />
+                @if (ViewBag.Article.Achetable)
+                {
+                    <label for="Achat" class="control-label">Achat</label>
+                    <input type="radio" name="Type" id="Achat" value="Achat" required />
+                }
+                @if (ViewBag.Article.Louable)
+                {
+                    <label for="Location" class="control-label">Location</label>
+                    <input type="radio" name="Type" id="Location" value="Location" required />
+                }
                 <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Date_recup" class="control-label"></label>
@@ -29,20 +56,11 @@
                 <span asp-validation-for="Date_recup" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <label asp-for="Quantity" class="control-label">Quantité</label>
+                <input asp-for="Quantity" class="form-control" min="1" max="@ViewBag.Article.Quantite" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ArticleId" class="control-label"></label>
-                <input asp-for="ArticleId" class="form-control" />
-                <span asp-validation-for="ArticleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <input asp-for="ClientId" class="form-control" />
-                <span asp-validation-for="ClientId" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -51,7 +69,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Retour</a>
+    <a asp-action="MesReservations">Retour</a>
 </div>
 
 @section Scripts {

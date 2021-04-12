@@ -8,7 +8,10 @@
 <h1>Liste des catégories</h1>
 
 <p>
-    <a asp-action="Create">Créer une nouvelle catégorie</a>
+    @if (User.IsInRole("ADMIN") || User.IsInRole("VENDEUR"))
+    {
+        <a asp-action="Create">Créer une nouvelle catégorie</a>
+    }
 </p>
 <table class="table">
     <thead>

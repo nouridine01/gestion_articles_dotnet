@@ -18,6 +18,7 @@
     <Content Remove="Views\Achats\Edit.cshtml" />
     <Content Remove="Views\Locations\Delete.cshtml" />
     <Content Remove="Views\Locations\Edit.cshtml" />
+    <Content Remove="Views\Reservations\Edit.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

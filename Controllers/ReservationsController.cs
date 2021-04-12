@@ -9,16 +9,20 @@ using outils_dotnet.Data;
 using outils_dotnet.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using outils_dotnet.Areas.Identity.Data;
 
 namespace outils_dotnet.Controllers
 {
     public class ReservationsController : Controller
     {
         private readonly dbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public ReservationsController(dbContext context)
+        public ReservationsController(dbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservations
@@ -53,13 +57,28 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            var article = _context.Article.Find((long)reservation.ArticleId);
+            var client = _context.Client.Find((long)reservation.ClientId);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            ViewData["Article"] = article;
+            ViewData["User"] = user;
+
             return View(reservation);
         }
 
         // GET: Reservations/Create
         [Authorize(Roles = "CLIENT")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(long? id)
         {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            Client client = _context.Client.Where(c => c.UserId == userId).First();
+
+            var article = _context.Article.Find(id);
+            ViewData["User"] = user;
+            ViewData["Article"] = article;
+            ViewData["Client"] = client;
             return View();
         }
 
@@ -69,14 +88,19 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "CLIENT")]
-        public async Task<IActionResult> Create([Bind("Id,Type,Date,Date_recup,Quantity,ArticleId,ClientId")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Type,Date_recup,Quantity,ArticleId,ClientId")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
+                reservation.Date = DateTime.Now;
+                var article = _context.Article.Find((long)reservation.ArticleId);
+                article.Quantite -= reservation.Quantity;
+                _context.Update(article);
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MesReservations));
             }
+
             return View(reservation);
         }
 
@@ -131,7 +155,7 @@ namespace outils_dotnet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(reservation);
-        }
+        }*/
 
         // GET: Reservations/Delete/5
         public async Task<IActionResult> Delete(long? id)
@@ -148,6 +172,13 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            var article = _context.Article.Find((long)reservation.ArticleId);
+            var client = _context.Client.Find((long)reservation.ClientId);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            ViewData["Article"] = article;
+            ViewData["User"] = user;
+
             return View(reservation);
         }
 
@@ -161,7 +192,24 @@ namespace outils_dotnet.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        */
+
+        // GET: Reservations/Honorer/5
+        public async Task<IActionResult> Honorer(long? id)
+        {
+            var reservation = await _context.Reservation.FindAsync(id);
+            if(reservation.Type == "Achat")
+            {
+
+            }
+            else if(reservation.Type == "Location")
+            {
+
+            }
+
+            _context.Reservation.Remove(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool ReservationExists(long id)
         {

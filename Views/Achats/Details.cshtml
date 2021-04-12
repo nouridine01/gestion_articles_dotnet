@@ -38,5 +38,12 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Retour</a>
+    @if (User.IsInRole("VENDEUR") || User.IsInRole("ADMIN"))
+    {
+        <a asp-action="Index">Retour</a>
+    }
+    @if (User.IsInRole("CLIENT"))
+    {
+        <a asp-action="MesAchats">Retour</a>
+    }
 </div>
