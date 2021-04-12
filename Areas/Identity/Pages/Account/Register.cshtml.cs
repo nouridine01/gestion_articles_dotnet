@@ -75,6 +75,8 @@ namespace outils_dotnet.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "ADMIN" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "VENDEUR" });
             //await _roleManager.CreateAsync(new IdentityRole { Name = "CLIENT" });
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
