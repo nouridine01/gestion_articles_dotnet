@@ -153,6 +153,22 @@ namespace outils_dotnet.Controllers
             {
                 return NotFound();
             }
+
+            if (await _userManager.IsInRoleAsync(user, "admin"))
+                ViewData["Admin"] = true;
+            else
+                ViewData["Admin"] = false;
+
+            if (await _userManager.IsInRoleAsync(user, "vendeur"))
+                ViewData["Vendeur"] = true;
+            else
+                ViewData["Vendeur"] = false;
+
+            if (await _userManager.IsInRoleAsync(user, "client"))
+                ViewData["Client"] = true;
+            else
+                ViewData["Client"] = false;
+
             return View(user);
         }
 
@@ -162,8 +178,25 @@ namespace outils_dotnet.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Nom,Prenom")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Nom,Prenom")] User user, string[] roles = null)
         {
+            roles ??= new string[0];
+
+            if (await _userManager.IsInRoleAsync(user, "admin"))
+                ViewData["Admin"] = true;
+            else
+                ViewData["Admin"] = false;
+
+            if (await _userManager.IsInRoleAsync(user, "vendeur"))
+                ViewData["Vendeur"] = true;
+            else
+                ViewData["Vendeur"] = false;
+
+            if (await _userManager.IsInRoleAsync(user, "client"))
+                ViewData["Client"] = true;
+            else
+                ViewData["Client"] = false;
+
             if (id != user.Id)
             {
                 return NotFound();
@@ -176,6 +209,36 @@ namespace outils_dotnet.Controllers
                 currentUser.UserName = user.UserName;
                 currentUser.Nom = user.Nom;
                 currentUser.Prenom = user.Prenom;
+
+                if (roles.Length == 0 && !await _userManager.IsInRoleAsync(currentUser, "client"))
+                {
+                    ViewData["Suppression"] = "Veuillez sélectionner au moins un rôle.";
+                    return View(user);
+                }
+
+                if (!await _userManager.IsInRoleAsync(currentUser, "vendeur"))
+                {
+                    if (roles.Contains("vendeur"))
+                    {
+                        await _userManager.AddToRoleAsync(currentUser, "vendeur");
+                    }
+                }
+                else if (!roles.Contains("vendeur"))
+                {
+                    await _userManager.RemoveFromRoleAsync(currentUser, "vendeur");
+                }
+
+                if (!await _userManager.IsInRoleAsync(currentUser, "admin"))
+                {
+                    if (roles.Contains("admin"))
+                    {
+                        await _userManager.AddToRoleAsync(currentUser, "admin");
+                    }
+                }
+                else if (!roles.Contains("admin"))
+                {
+                    await _userManager.RemoveFromRoleAsync(currentUser, "admin");
+                }
 
                 await _userManager.UpdateAsync(currentUser);
                 

@@ -29,6 +29,30 @@
                 <input asp-for="Prenom" class="form-control" />
                 <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
+            @if (User.IsInRole("ADMIN") && !ViewBag.Client)
+            {
+                <div class="form-group">
+                    <label>Admin : </label>
+                    @if (ViewBag.Admin)
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="admin" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="admin" />
+                    }
+                    <label>Vendeur : </label>
+                    @if (ViewBag.Vendeur)
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="vendeur" checked />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="vendeur" />
+                    }
+                    <br /><span class="text-danger">@ViewData["Suppression"]</span>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
