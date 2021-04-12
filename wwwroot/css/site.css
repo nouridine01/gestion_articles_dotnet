@@ -87,3 +87,43 @@ body {
 .outils-navbar .nav-ul {
     padding-left: 25px;
 }
+
+.accueil {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.accueil > img:first-of-type {
+    width: 325px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.accueil > h2 {
+    margin-bottom: 35px;
+}
+
+.accueil > p {
+    width: 70%;
+    margin-bottom: 45px;
+}
+
+.accueil > img:last-of-type {
+    width: 75%;
+    margin-bottom: 50px;
+}
+
+.accueil > a {
+    width: 150px;
+    margin-bottom: 35px;
+    padding: 5px;
+    background-color: #1d3557;
+    color: white;
+    font-weight: 900;
+}
+
+.accueil > a:hover {
+    color: white;
+    text-decoration: none;
+}

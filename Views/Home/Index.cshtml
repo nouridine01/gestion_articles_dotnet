@@ -2,7 +2,14 @@
     ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center accueil">
+    <h1 style="display: none">OUTILS 3000</h1>
+    <img src="~/img/outils3000.jpg" class="logo">
+    <h2>Le bon outil pour le bon travail.</h2>
+    <p>Outils 3000 est un service en ligne permettant de réserver des outils en vue d'une location ou d'un achat dans un de nos magasins physiques. Vous pouvez également l'utiliser pour consulter la liste de vos derniers achats et locations, qu'ils aient été réservés au préalable ou non. Connectez vous dès maintenant afin d'accéder à la liste de nos articles disponibles.</p>
+    <img src="~/img/construction.jpg" class="construction">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a class="button button-1" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+    }
 </div>
