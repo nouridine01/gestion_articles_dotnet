@@ -51,6 +51,19 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            if(await _userManager.IsInRoleAsync(user, "admin"))
+            {
+                ViewData["Role"] = "Admin";
+            }
+            else if(await _userManager.IsInRoleAsync(user, "vendeur"))
+            {
+                ViewData["Role"] = "Vendeur";
+            }
+            else if(await _userManager.IsInRoleAsync(user, "client"))
+            {
+                ViewData["Role"] = "Client";
+            }
+
             return View(user);
         }
 
@@ -186,27 +199,74 @@ namespace outils_dotnet.Controllers
                 return NotFound();
             }
 
+            if (await _userManager.IsInRoleAsync(user, "admin"))
+            {
+                ViewData["Role"] = "Admin";
+            }
+            else if (await _userManager.IsInRoleAsync(user, "vendeur"))
+            {
+                ViewData["Role"] = "Vendeur";
+            }
+            else if (await _userManager.IsInRoleAsync(user, "client"))
+            {
+                ViewData["Role"] = "Client";
+            }
+
             return View(user);
         }
 
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN, VENDEUR")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            if (await _userManager.IsInRoleAsync(user, "client"))
+            if (await _userManager.IsInRoleAsync(user, "admin"))
             {
-                var client = await _context.Client.Where(c => c.UserId == id).ToListAsync();
-                _context.Client.Remove(client.First());
-                await _context.SaveChangesAsync();
+                ViewData["Role"] = "Admin";
+            }
+            else if (await _userManager.IsInRoleAsync(user, "vendeur"))
+            {
+                ViewData["Role"] = "Vendeur";
+            }
+            else if (await _userManager.IsInRoleAsync(user, "client"))
+            {
+                ViewData["Role"] = "Client";
             }
 
-            await _userManager.DeleteAsync(user);
+            if (await _userManager.IsInRoleAsync(user, "client"))
+            {
+                var clients = await _context.Client.Where(c => c.UserId == id).ToListAsync();
+                var client = clients.First();
 
-            return RedirectToAction(nameof(Index));
+                var isEmptyReservation = await _context.Reservation.FirstOrDefaultAsync(r => r.ClientId == client.Id);
+                var isEmptyLocation = await _context.Location.FirstOrDefaultAsync(l => l.ClientId == client.Id);
+                var isEmptyAchat = await _context.Achat.FirstOrDefaultAsync(a => a.ClientId == client.Id);
+
+                if (isEmptyReservation == null && isEmptyLocation == null && isEmptyAchat == null)
+                {
+                    _context.Client.Remove(client);
+                    await _userManager.DeleteAsync(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewData["Suppression"] = "Vous ne pouvez pas supprimer ce client car il a effectué des transactions.";
+                    return View(user);
+                }
+            }
+
+            if ((await _userManager.IsInRoleAsync(user, "admin") || await _userManager.IsInRoleAsync(user, "Vendeur")))
+            {
+                await _userManager.DeleteAsync(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(user);
         }
 
         private bool ClientExists(long id)

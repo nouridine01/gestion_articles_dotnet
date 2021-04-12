@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Liste des clients</h1>
+<h1>Liste des utilisateurs</h1>
 
 <p>
     @if (User.IsInRole("ADMIN"))
     {
-        <a asp-action="Create">Créer un nouveau client</a>
+        <a asp-action="Create">Créer un nouvel utilisateur</a>
     }
 </p>
 <table class="table">
@@ -24,6 +24,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Prenom)
+            </th>
+            <th>
+                Permissions
             </th>
             <th></th>
         </tr>
@@ -41,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.Prenom)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
                 @if (User.IsInRole("ADMIN"))
                 {
                     <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>

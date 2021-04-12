@@ -9,7 +9,7 @@
 
 <div>
     <h4>Client</h4>
-    <hr /> 
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -40,6 +40,14 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Prenom)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Permissions
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Role
         </dd>
     </dl>
 </div>

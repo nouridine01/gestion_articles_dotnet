@@ -157,10 +157,21 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var article = await _context.Article.FindAsync(id);
-            _context.Article.Remove(article);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var article = await _context.Article.Include(a => a.Categorie).FirstOrDefaultAsync(m => m.Id == id);
+            var isEmptyReservation = await _context.Reservation.FirstOrDefaultAsync(r => r.ArticleId == id);
+            var isEmptyLocation = await _context.Location.FirstOrDefaultAsync(l => l.ArticleId == id);
+            var isEmptyAchat = await _context.Achat.FirstOrDefaultAsync(a => a.ArticleId == id);
+            if (isEmptyReservation == null && isEmptyLocation == null && isEmptyAchat == null)
+            {
+                _context.Article.Remove(article);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewData["Suppression"] = "Vous ne pouvez pas supprimer cet article car il a été utilisé dans des transactions.";
+                return View(article);
+            }
         }
 
         private bool ArticleExists(long id)
