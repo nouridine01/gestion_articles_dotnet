@@ -68,7 +68,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Create
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
@@ -80,7 +80,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Create([Bind("Email,Nom,Prenom")] User user, string password, string[] roles = null)
         {
             roles ??= new string[0];
@@ -139,7 +139,7 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Clients/Edit/5
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -177,7 +177,7 @@ namespace outils_dotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Nom,Prenom")] User user, string[] roles = null)
         {
             roles ??= new string[0];

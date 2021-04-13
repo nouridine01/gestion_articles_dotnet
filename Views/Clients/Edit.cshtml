@@ -29,9 +29,14 @@
                 <input asp-for="Prenom" class="form-control" />
                 <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
-            @if (User.IsInRole("ADMIN") && !ViewBag.Client)
-            {
-                <div class="form-group">
+            <div class="form-group">
+                @if (ViewBag.Client)
+                {
+                    <label>Client : </label>
+                    <input type="checkbox" id="roles" name="roles" value="admin" onclick="return false" checked/>
+                }
+                else if (User.IsInRole("ADMIN"))
+                {
                     <label>Admin : </label>
                     @if (ViewBag.Admin)
                     {
@@ -50,9 +55,30 @@
                     {
                         <input type="checkbox" id="roles" name="roles" value="vendeur" />
                     }
-                    <br /><span class="text-danger">@ViewData["Suppression"]</span>
-                </div>
-            }
+                }
+                else
+                {
+                    <label>Admin : </label>
+                    @if (ViewBag.Admin)
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="admin" onclick="return false" checked/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="admin" onclick="return false"/>
+                    }
+                    <label>Vendeur : </label>
+                    @if (ViewBag.Vendeur)
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="vendeur" onclick="return false" checked/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="roles" name="roles" value="vendeur" onclick="return false"/>
+                    }
+                }
+                <br /><span class="text-danger">@ViewData["Suppression"]</span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Confirmer" class="btn btn-primary" />
             </div>

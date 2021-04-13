@@ -8,7 +8,7 @@
 <h1>Liste des catégories</h1>
 
 <p>
-    @if (User.IsInRole("ADMIN") || User.IsInRole("VENDEUR"))
+    @if (User.IsInRole("ADMIN"))
     {
         <a asp-action="Create">Créer une nouvelle catégorie</a>
     }
@@ -29,9 +29,12 @@
                 @Html.DisplayFor(modelItem => item.Nom)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
+                }
             </td>
         </tr>
 }
