@@ -222,11 +222,16 @@ namespace outils_dotnet.Controllers
                 currentUser.Nom = user.Nom;
                 currentUser.Prenom = user.Prenom;
 
-                if (roles.Length == 0 && !await _userManager.IsInRoleAsync(currentUser, "client"))
+                if (roles.Length == 0)
                 {
                     ViewData["Suppression"] = "Veuillez sélectionner au moins un rôle.";
                     return View(user);
                 }
+
+                await _userManager.UpdateAsync(currentUser);
+
+                if(roles.Contains("client"))
+                    return RedirectToAction(nameof(Index));
 
                 if (!await _userManager.IsInRoleAsync(currentUser, "vendeur"))
                 {
@@ -251,8 +256,6 @@ namespace outils_dotnet.Controllers
                 {
                     await _userManager.RemoveFromRoleAsync(currentUser, "admin");
                 }
-
-                await _userManager.UpdateAsync(currentUser);
                 
                 return RedirectToAction(nameof(Index));
             }
