@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 <label asp-for="Quantite" class="control-label"></label>
-                <input asp-for="Quantite" class="form-control" min="1" max="@ViewBag.Article.Quantite" />
+                <input type="date" asp-for="Quantite" class="form-control" min="1" max="@ViewBag.Article.Quantite" />
                 <span asp-validation-for="Quantite" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,14 +36,14 @@
                 <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Retour</a>
+    <a asp-controller="Articles" asp-action="Index">Retour</a>
 </div>
 
 @section Scripts {

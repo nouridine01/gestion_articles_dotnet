@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 <label asp-for="Date_retour" class="control-label"></label>
-                <input asp-for="Date_retour" class="form-control" />
+                <input type="date"  asp-for="Date_retour" class="form-control" />
                 <span asp-validation-for="Date_retour" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,14 +42,14 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Retour</a>
+    <a asp-controller="Articles" asp-action="Index">Retour</a>
 </div>
 
 @section Scripts {

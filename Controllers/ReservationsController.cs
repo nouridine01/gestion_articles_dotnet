@@ -158,6 +158,7 @@ namespace outils_dotnet.Controllers
         }*/
 
         // GET: Reservations/Delete/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -185,6 +186,7 @@ namespace outils_dotnet.Controllers
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
             var reservation = await _context.Reservation.FindAsync(id);
@@ -194,21 +196,71 @@ namespace outils_dotnet.Controllers
         }
 
         // GET: Reservations/Honorer/5
+        [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Honorer(long? id)
         {
-            var reservation = await _context.Reservation.FindAsync(id);
-            if(reservation.Type == "Achat")
+            if (id == null)
             {
-
-            }
-            else if(reservation.Type == "Location")
-            {
-
+                return NotFound();
             }
 
-            _context.Reservation.Remove(reservation);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var reservation = await _context.Reservation
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            var article = _context.Article.Find((long)reservation.ArticleId);
+            var client = _context.Client.Find((long)reservation.ClientId);
+            var user = await _userManager.FindByIdAsync(client.UserId);
+
+            ViewData["Article"] = article;
+            ViewData["User"] = user;
+
+            return View(reservation);
+        }
+
+        // POST: Reservations/Honorer/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
+        public async Task<IActionResult> Honorer([Bind("Id,Type,Date,Date_recup,Quantity,ArticleId,ClientId")] Reservation reservation, DateTime? date_retour = null)
+        {
+            if (reservation.Type == "Achat")
+            {
+                Achat achat = new Achat();
+                achat.ArticleId = reservation.ArticleId;
+                achat.ClientId = reservation.ClientId;
+                achat.Date = reservation.Date_recup;
+                achat.Quantite = reservation.Quantity;
+                _context.Achat.Add(achat);
+
+                _context.Reservation.Remove(reservation);
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Achats");
+            }
+            else if (reservation.Type == "Location")
+            {
+                Location location = new Location();
+                location.ArticleId = reservation.ArticleId;
+                location.ClientId = reservation.ClientId;
+                location.Date = reservation.Date_recup;
+                location.Quantite = reservation.Quantity;
+                location.Date_retour = date_retour ?? DateTime.Now;
+                _context.Location.Add(location);
+
+                _context.Reservation.Remove(reservation);
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Locations");
+            }
+            return View(reservation);
         }
 
         private bool ReservationExists(long id)
