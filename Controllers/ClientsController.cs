@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +32,19 @@ namespace outils_dotnet.Controllers
         public async Task<IActionResult> Index()
         {
             var dbContext = _userManager.Users;
+            return View(await dbContext.ToListAsync());
+        }
+
+        // POST: Clients
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR")]
+        public async Task<IActionResult> Index(string keyword)
+        {
+
+            var dbContext = _userManager.Users.Where(u => u.UserName.Contains(keyword));
             return View(await dbContext.ToListAsync());
         }
 

@@ -28,6 +28,17 @@ namespace outils_dotnet.Controllers
             return View(await dbContext.ToListAsync());
         }
 
+        // POST: Articles
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
+        public async Task<IActionResult> Index(string keyword)
+        {
+            return View(await _context.Article.Include(a => a.Categorie).Where(a => a.Nom.Contains(keyword)).ToListAsync());
+        }
+
         // GET: Articles/Details/5
         [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Details(long? id)
