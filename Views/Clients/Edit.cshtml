@@ -33,7 +33,7 @@
                 @if (ViewBag.Client)
                 {
                     <label>Client : </label>
-                    <input type="checkbox" id="roles" name="roles" value="admin" onclick="return false" checked/>
+                    <input type="checkbox" id="roles" name="roles" value="client" onclick="return false" checked/>
                 }
                 else if (User.IsInRole("ADMIN"))
                 {

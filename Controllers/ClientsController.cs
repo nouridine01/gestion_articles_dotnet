@@ -230,9 +230,6 @@ namespace outils_dotnet.Controllers
 
                 await _userManager.UpdateAsync(currentUser);
 
-                if(roles.Contains("client"))
-                    return RedirectToAction(nameof(Index));
-
                 if (!await _userManager.IsInRoleAsync(currentUser, "vendeur"))
                 {
                     if (roles.Contains("vendeur"))
