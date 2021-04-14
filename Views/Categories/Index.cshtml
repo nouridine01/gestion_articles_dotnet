@@ -7,13 +7,20 @@
 
 <h1>Liste des catégories</h1>
 
+
+<form asp-action="Index">
+    <input type="text" name="keyword" id="keyword" />
+    <input type="submit" value="Rechercher" class="btn btn-primary" />
+</form>
+
 <p>
     @if (User.IsInRole("ADMIN"))
     {
         <a asp-action="Create">Créer une nouvelle catégorie</a>
     }
 </p>
-<table class="table">
+
+<table class="table mt-3">
     <thead>
         <tr>
             <th>
@@ -23,24 +30,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
-                @if (User.IsInRole("ADMIN"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<form asp-action="Index">
-    <input type="text" name="keyword" id="keyword" required/>
-    <input type="submit" value="Rechercher" class="btn btn-primary" />
-</form>

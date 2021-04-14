@@ -37,40 +37,6 @@ namespace gestion_articles
             return service2.Categorie;
         }
 
-        /*[HttpGet("{id}")]
-        [Authorize]
-        public User GetOne(int id)
-        {
-            return service.Users.FirstOrDefault(s=>s.Id==id);
-        }
-
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            User user =service.Users.FirstOrDefault(s => s.Id == id);
-            service.Users.Remove(user);
-            service.SaveChanges();
-        }
-
-
-        [HttpPut("{id}")]
-        public User Update(int id, [FromBody] User user)
-        {
-            user.Id= id;
-            //service.Users.(user);
-            service.SaveChanges();
-            return user;
-        }
-
-
-        // POST api/<controller>
-        [HttpPost]
-        public User Post([FromBody] User user)
-        {
-            service.Users.Add(user);
-            service.SaveChanges();
-            return user;
-        }*/
 
 
     }

@@ -43,6 +43,10 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN, VENDEUR")]
         public async Task<IActionResult> Index(string keyword)
         {
+            if (keyword == null || keyword == "")
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             var dbContext = _userManager.Users.Where(u => u.UserName.Contains(keyword));
             return View(await dbContext.ToListAsync());

@@ -7,13 +7,19 @@
 
 <h1>Liste des articles</h1>
 
+<form asp-action="Index">
+    <input type="text" name="keyword" id="keyword" />
+    <input type="submit" value="Rechercher" class="btn btn-primary" />
+</form>
+
 <p>
     @if (User.IsInRole("ADMIN"))
     {
         <a asp-action="Create">Créer un nouvel article</a>
     }
 </p>
-<table class="table">
+
+<table class="table mt-3">
     <thead>
         <tr>
             <th>
@@ -38,51 +44,48 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categorie.Nom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prix)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantite)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Louable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Achetable)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
-                @if (User.IsInRole("ADMIN"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
-                }
-                @if (User.IsInRole("VENDEUR") && item.Achetable)
-                {
-                    <a asp-controller="Achats" asp-action="Create" asp-route-id="@item.Id">| Acheter</a>
-                }
-                @if (User.IsInRole("VENDEUR") && item.Louable)
-                {
-                    <a asp-controller="Locations" asp-action="Create" asp-route-id="@item.Id">| Louer</a>
-                }
-                @if (User.IsInRole("CLIENT") && (item.Louable || item.Achetable))
-                {
-                    <a asp-controller="Reservations" asp-action="Create" asp-route-id="@item.Id">| Réserver</a>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categorie.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prix)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantite)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Louable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Achetable)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">| Modifier</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">| Supprimer</a>
+                    }
+                    @if (User.IsInRole("VENDEUR") && item.Achetable)
+                    {
+                        <a asp-controller="Achats" asp-action="Create" asp-route-id="@item.Id">| Acheter</a>
+                    }
+                    @if (User.IsInRole("VENDEUR") && item.Louable)
+                    {
+                        <a asp-controller="Locations" asp-action="Create" asp-route-id="@item.Id">| Louer</a>
+                    }
+                    @if (User.IsInRole("CLIENT") && (item.Louable || item.Achetable))
+                    {
+                        <a asp-controller="Reservations" asp-action="Create" asp-route-id="@item.Id">| Réserver</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<form asp-action="Index">
-    <input type="text" name="keyword" id="keyword" required/>
-    <input type="submit" value="Rechercher" class="btn btn-primary" />
-</form>

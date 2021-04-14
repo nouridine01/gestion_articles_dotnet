@@ -36,6 +36,11 @@ namespace outils_dotnet.Controllers
         [Authorize(Roles = "ADMIN, VENDEUR, CLIENT")]
         public async Task<IActionResult> Index(string keyword)
         {
+            if (keyword == null || keyword == "")
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(await _context.Article.Include(a => a.Categorie).Where(a => a.Nom.Contains(keyword)).ToListAsync());
         }
 

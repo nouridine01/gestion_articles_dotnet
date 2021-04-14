@@ -1,0 +1,70 @@
+﻿@model IEnumerable<object>
+
+@{
+    ViewData["Title"] = "Recherche";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Recherche globale</h1>
+
+<form asp-action="Recherche">
+    <input type="text" name="keyword" id="keyword" required />
+    <input type="submit" value="Rechercher" class="btn btn-primary" />
+</form>
+
+<table class="table mt-3">
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            @if (item.GetType() == typeof(Article))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => ((Article)item).Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((Article)item).Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((Article)item).Categorie.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((Article)item).Prix)
+                </td>
+            }
+            else if (item.GetType() == typeof(Categorie))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => ((Categorie)item).Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((Categorie)item).Nom)
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            }
+            else if (item.GetType() == typeof(outils_dotnet.Areas.Identity.Data.User))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => ((outils_dotnet.Areas.Identity.Data.User)item).Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((outils_dotnet.Areas.Identity.Data.User)item).UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((outils_dotnet.Areas.Identity.Data.User)item).Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => ((outils_dotnet.Areas.Identity.Data.User)item).Prenom)
+                </td>
+            }
+            else
+            {
+                <td>@item.GetType()</td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>
